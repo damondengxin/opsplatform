@@ -6,27 +6,28 @@
 
 
 {% block content %}
+<div>
+       <div class="box box-body">
+              <form class="form-horizontal" action="" method="POST">
+                {% csrf_token %}
+               {% for field in form %}
+                       {% if field.errors %}
+                           {% for error in field.errors %}
+                               <div class="alert alert-danger" >{{ field.label }}: {{ error }}</div>
+                           {% endfor %}
+                       {% endif %}
+               {% endfor %}
 
-<div class="box box-info">
-       <form class="form-horizontal" action="" method="POST">
-         {% csrf_token %}
-        {% for field in form %}
-                {% if field.errors %}
-                    {% for error in field.errors %}
-                        <div class="alert alert-danger" >{{ field.label }}: {{ error }}</div>
-                    {% endfor %}
-                {% endif %}
-        {% endfor %}
-
-         {% for item in form %}
-            <div class="form-group">
-                <label class="col-sm-1 control-label">{{ item.label }}:</label>
-                <div >{{ item }}</div>
-            </div>
-          {% endfor %}
-      <button type="submit" class="btn btn-primary col-lg-offset-1 "> 提交</button>
-      <button class="btn btn-danger" ><a  href="{% url 'website' %}">返回</a></button>
-     </form>
+                {% for item in form %}
+                   <div class="form-group">
+                       <label class="col-sm-1 control-label">{{ item.label }}:</label>
+                       <div >{{ item }}</div>
+                   </div>
+                 {% endfor %}
+             <button type="submit" class="btn btn-primary col-lg-offset-1 "> 提交</button>
+             <button class="btn btn-danger" ><a  href="{% url 'website' %}">返回</a></button>
+            </form>
+       </div>
 </div>
 
 {% endblock %}
