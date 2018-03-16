@@ -1,0 +1,20 @@
+{
+    "web": {
+        "addr": ":9000",
+        "tls_addr": ":8443",
+        "tls_url": "https://webconsole.realclouds.org",
+        "static_dir": "static",
+        "template_dir": "template/default",
+        "template_suffix": ".html",
+        "session_timeout": 1800,
+        "enable_jsonp": true,
+        "jsonp_param": "callback",
+        "enable_gzip": false,
+        "enable_tls": false,
+        "cors_white_list": "192.168.1.154,192.168.1.154:9000,192.168.1.154:8000,",
+        "enable_fcgi": false,
+        "tls_cert": "214044428560678.pem",
+        "tls_key": "214044428560678.key",
+        "daemon": false
+    }
+}

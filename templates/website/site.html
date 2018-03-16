@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+                  <br/>
+                  <table class="table table-bordered  table-hover" id="dataform">
+                      <thead>
+                        <tr>
+                            <th><input type="checkbox" id="choose_all"/></th>
+                            <th>序号</th>
+                            <th>名称</th>
+                            <th>网址</th>
+                        </tr>
+                      </thead>
+                            <tbody>
+                                    {% for website in allwebsite %}
+                                        <tr >
+                                        <td><input type="checkbox"  class="item1" value="{{ website.id }}" name="id" /></td>
+                                            <td>{{ forloop.counter  }}</td>
+                                            <td><a href="{%  url  'website_edit'  website.id %}" >{{ website.name }}</a></td>
+                                            <td><a target="_blank" href=" {{ website.url }}" > {{ website.url }}</a></td>
+                                        </tr>
+                                    {% endfor %}
+                            </tbody>
+                  </table>
+
+
+                    <div >
+                        <button class="btn btn-success" ><a href="add/">添加</a></button>
+                        <button class="btn btn-danger" type="button" id="delete">删除</button>
+                    </div>
+
+                </div>
+
+{% endblock %}
+
+{% block js_script %}
+<script>
+ $("#delete").on("click",function () {
+        var array = new Array();
+        $("input.item1:checked").each(function() {
+            //alert($(this).val());
+            array.push($(this).val());
+        });
+        if(array.length>0) {
+            if (confirm("确定删除?")) {
+                $.ajax({
+                    url: '{%  url "website_delete" %}',
+                    data: {id: JSON.stringify(array)},
+                    type: 'POST',
+                    dataType: 'JSON',
+                    traditional: true,
+                    success: function (data) {
+                        if (data.status) {
+                            location.href = '{%  url "website" %}';
+                        } else {
+                            alert(data.error);
+                        }
+                    },
+                    error: function () {
+                        location.href = "/noperm"
+                    }
+                });
+            }
+        }
+
+        else {
+            alert("请至少选择一个");
+        }
+    })
+
+    $("#choose_all").click(function(){
+            if($(this).is(':checked')){
+                $("input[type='checkbox']").each(function(){
+                    $(this).prop("checked",true);
+                });
+        }else{
+            $("input[type='checkbox']").each(function(){
+                    $(this).removeAttr("checked",false);
+                });
+        }
+    });
+
+</script>
+{% endblock %}

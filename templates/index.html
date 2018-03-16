@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+
+
+
+{% block content %}
+
+    index
+
+{% endblock %}
+
+
+{% block basic_script %}
+<script src="{% static 'js/jquery.csrf.js' %}"></script>
+<script type="text/javascript">
+
+				function download_code() {
+					var id=$('input[name="optionsRadios"]:checked').val();
+					if(!id){
+						alert('选择项目');return;
+					}
+					//var projectid = $('#optionsRadios_'+id).attr("value");
+					//var typeid=$("#tongbu1").attr("value")
+					var project = $('#project_'+id).html();
+					var address = $('#address_'+id).html();
+					var param = {project:project,address:address};
+					$.ajax({
+                        url: '/deploy/download_code',
+                        data: param,
+                        type: 'POST',
+                        dataType: 'JSON',
+                        traditional: true,
+                        success:function (data) {
+                            if(data.status){
+                                    location.href="/deploy/download_code";
+									}else{
+                                        alert(data.error);
+									}
+                        }
+                    })
+//					$.post("/deploy/download_code/", param, function (data) {
+//					   var ret = JSON.parse(data);
+//					});
+//					window.location.href="/deploy/download_code"
+				}
+
+
+				$('#add').click(function(){
+                $.ajax({
+                    url: "/deploy/deploy_add",
+                    type: 'POST',
+                    //data: {'hostname': $('#host').val(), 'ip': $('#ip').val(), 'port': $('#port').val(), 'b_id': $('#sel').val()},
+                    data: $('#add_form').serialize(),
+                    success: function(data){
+                        var obj = JSON.parse(data);
+                        if(obj.status){
+                            location.reload();
+                        }else{
+                            $('#erro_msg').text(obj.error);
+                        }
+                    }
+                })
+            });
+
+				$("#edit").click(function () {
+					var id=$('input[name="optionsRadios"]:checked').val();
+					if(!id){
+						alert('选择项目');return;
+					}
+					var projectid = $('#optionsRadios_'+id).attr("value");
+					//var typeid=$("#tongbu1").attr("value")
+					var project = $('#project_'+id).text();
+					var address = $('#address_'+id).text();
+					$("#pid").val(projectid);
+					$("#pname").val(project);
+					$("#paddress").val(address);
+
+
+					$('#editd').click(function(){
+								$.ajax({
+								url: "/deploy/deploy_edit",
+								type: 'POST',
+								//data: {'hostname': $('#host').val(), 'ip': $('#ip').val(), 'port': $('#port').val(), 'b_id': $('#sel').val()},
+								data: $('#edit_form').serialize(),
+								success: function(data){
+									var obj = JSON.parse(data);
+									if(obj.status){
+										location.reload();
+									}else{
+										$('#erro_msg').text(obj.error);
+									}
+								}
+							})
+						})
+
+                });
+
+
+
+				$("#delete").click(function () {
+					var id=$('input[name="optionsRadios"]:checked').val();
+					if(!id){
+						alert('选择项目');return;
+					}
+					var projectid = $('#optionsRadios_'+id).attr("value");
+					$("#deleteconfirm").click(function () {
+					$.ajax({
+								url: "/index",
+								type: 'POST',
+								data: {"dprojectid":projectid},
+								//data: $('#delete_form').serialize(),
+								success: function(data){
+									var obj = JSON.parse(data);
+									if(obj.status){
+										location.reload();
+									}else{
+										$('#erro_msg').text(obj.error);
+									}
+								}
+							})
+
+                    })
+                });
+		</script>
+{% endblock %}

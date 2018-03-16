@@ -1,0 +1,34 @@
+{% extends 'accounts/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<br>
+<div class="box">
+    <!-- /.box-header -->
+    <!-- form start -->
+        <form class="form-horizontal" role="form" action="{% url 'user_edit' id %}" method="POST" >
+            {% csrf_token %}
+            {% for field in form %}
+                    {% if field.errors %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger" >{{ field.label }}: {{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+            {% endfor %}
+
+             {% for item in form %}
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">{{ item.label }}:</label>
+                    <div >{{ item }}</div>
+                </div>
+              {% endfor %}
+                    <div class="form-group">
+                        <div class="box-footer col-lg-offset-1 ">
+                            <button type="submit" class="btn btn-primary " >更新信息</button>&nbsp;&nbsp;
+                            <a href="{% url 'user_list' %}" class="btn btn-warning"> 返回</a>
+                             <a  href="{% url 'reset_password' id %}"  class="btn btn-danger" onclick="return confirm('确认重置密码？')">重置密码</a>
+                        </div>
+                    </div>
+        </form>
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+一，python3.5
+二，建立虚拟环境 python3 -m venv opsmgtv2_env
+三，pip install -r requirement.txt
+四，cp conf/celery-*.service /etc/systemd/system/，
+mkdir /var/run/celery/
+mkdir /var/log/celery/
+touch /var/log/celery/beat.log
+touch /var/log/celery/worker.log
+
+五，python3 manage.py makemigrations django_celery_beat django_celery_monitor  python manage.py django_celery_beat
+六，安装webcosole,yum -y install go ，用conf.json覆盖默认的conf.json
+
+

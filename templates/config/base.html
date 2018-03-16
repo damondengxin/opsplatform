@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+
+{% block css_file %}
+    {% load staticfiles %}
+    <link href="{% static 'css/bootstrap-multiselect.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block menu %}
+	
+	<div class="text-center h3" ><a href="{% url 'change_password' %}"> <span class="glyphicon  glyphicon-user"></span>{{ request.user }}</a></div>
+
+		<ul class="nav menu">
+
+			<li ><a href="{% url 'config' %}"><span class="glyphicon glyphicon-dashboard"></span>配置选项</a></li>
+			<li role="presentation" class="divider"></li>
+			<li ><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-user" ></span>重新登录</a></li>
+
+		</ul>
+        <div class="attribution">
+        Powered by@<a href="http://getbootstrap.com" target="_blank"  >Bootstrap </a><a href="https://www.djangoproject.com/" target="_blank"  >Django</a><br>
+         Tech Appli:<a href="mailto:admin@outlook.com">admin</a>
+        </div>
+{% endblock %}
+
+
+
+
+
+{% block js_script %}
+		<script src="{% static 'js/jquery.csrf.js' %}"></script>
+        <script src="{% static 'js/bootstrap-multiselect.js' %}"></script>
+
+		<script type="text/javascript">
+		$(function () {
+			$("ul.menu li ").find("a").each(function () {
+				if (window.location.pathname == $(this).attr('href')){
+					$($(this).parent().toggleClass('active'));
+				}
+			});
+			});
+	</script>
+		{% block basic_script %}
+
+		{% endblock %}
+
+{% endblock %}
+

@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+
+
+
+
+{% block content %}
+
+    <div class="content-wrapper">
+
+    <!-- Main content -->
+    <section class="content">
+        <form action="" method="post" id="user_form">
+                {% csrf_token %}
+            <div class="box">
+
+
+                <!-- /.box-header -->
+                <div class="box-body">
+                  <table class="table table-bordered  table-hover" id="dataform">
+                      <thead>
+                        <tr>
+
+                            <th><input type="checkbox" id="choose_all"/></th>
+                            <th>序号</th>
+                            <th>账号</th>
+                            <th>姓名</th>
+                            <th>Email</th>
+                            <th>状态</th>
+                            <th>角色</th>
+                            <th>最后登录时间</th>
+                        </tr>
+                      </thead>
+                            <tbody>
+                                {% for i in all_user %}
+                                    <tr class="even gradeX">
+
+                                        <td><input type="checkbox"  class="item1" value="{{ i.id }}" name="idc_check" /></td>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td><a href="{% url 'user_edit' i.id %}">{{ i.username }}</a></td>
+                                        <td>{{ i.nickname|default:"None" }}</td>
+                                        <td>{{ i.email }}</td>
+                                        <td>
+                                            {% if i.is_active %}
+                                                <span class="label label-success">启用</span>
+                                            {% else %}
+                                                <span class="label label-default">禁用</span>
+                                            {% endif %}
+                                        </td>
+                                            <td>{{ i.role.all|join:"," }}</td>
+                                        <td>{{ i.last_login|date:"Y-m-d H:i:s" }}</td>
+
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                  </table>
+
+                    <a href="{% url 'user_add' %}" class="btn btn-success">添加</a>
+                    <button class="btn btn-danger" type="button" id="delete"> 删除</button>
+                </div>
+            </div>
+        </form>
+    </section>
+        <!-- /.content -->
+</div>
+
+{% endblock %}
+
+{% block basic_script %}
+<script>
+ $("#delete").on("click",function () {
+        var array = new Array();
+        $("input.item1:checked").each(function() {
+            //alert($(this).val());
+            array.push($(this).val());
+        });
+        if(array.length>0) {
+            if (confirm("确定是否删除?")) {
+                $.ajax({
+                    url: '{% url "user_del" %}',
+                    data: {id: JSON.stringify(array)},
+                    type: 'POST',
+                    dataType: 'JSON',
+                    traditional: true,
+                    success: function (data) {
+                        if (data.status) {
+                            location.href = "{% url 'user_list' %}";
+                        } else {
+                            alert(data.error);
+                        }
+                    },
+                    error: function () {
+                        location.href = "/noperm"
+                    }
+                });
+            }
+        } else {
+            alert("请至少选择一个");
+        }
+
+    });
+
+
+    $("#choose_all").click(function(){
+            if($(this).is(':checked')){
+                $("input[type='checkbox']").each(function(){
+                    $(this).prop("checked",true);
+                });
+        }else{
+            $("input[type='checkbox']").each(function(){
+                    $(this).removeAttr("checked",false);
+                });
+        }
+
+    });
+
+</script>
+{% endblock  %}

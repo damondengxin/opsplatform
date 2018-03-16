@@ -1,0 +1,377 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+
+
+
+{% block content %}
+<div class="content-wrapper">
+
+    <!-- Main content -->
+    <section class="content">
+        <div id="dialog">
+        <div class="box">
+            <form class="form-horizontal" id="formdata" method="POST">
+                      {% csrf_token %}
+
+                 <span><b>系统配置</b></span>
+                <div class="form-group">
+                  <label  for="log_path" class="col-sm-2  control-label">日志路径:</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.conf.log_path }}" id="log_path" name="log_path" style="width:450px;">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="log_level" class="col-sm-2 control-label">日志级别:</label>
+
+                  <div class="col-sm-10">
+                    <select name="log_level" class="form-control" style="width:450px;">
+                            <option value="{{ result.conf.log_level }}" selected="selected"> {{ result.conf.log_level }}</option>
+                        {% for key,value in all_level.items %}
+                            <option value="{{ key }}"> {{ key }}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                </div>
+
+                 <hr/>
+                <span><b>gateone配置文件路径</b></span>
+                <div class="form-group">
+                      <label for="api_key" class="col-sm-2 control-label">api_key配置文件:</label>
+                      <div class="col-sm-10">
+                        <input type="text" value="{{ result.gateone.api_key }}" id="api_key"  name="api_key" style="width:450px;">
+                      </div>
+                </div>
+                <div class="form-group">
+                      <label for="gateone_server" class="col-sm-2 control-label">gateone访问地址:</label>
+                      <div class="col-sm-10">
+                        <input type="text" value="{{ result.gateone.gateone_server }}"  id="gateone_server" name="gateone_server" style="width:450px;">
+                      </div>
+                </div>
+
+
+                <hr>
+                  <p><b>数据库设置</b></p>
+                <div class="form-group">
+                  <label  for="engine" class="col-sm-2 control-label">Engine:</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.db.engine }}" id="engine" name="engine" style="width:450px;">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="host" class="col-sm-2 control-label">Host:</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.db.host }}"  id="host"  name="host" style="width:450px;">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label  for="user" class="col-sm-2 control-label">User:</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.db.user }}" id="user"  name="user" style="width:450px;">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label  for="port" class="col-sm-2 control-label">Port:</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.db.port }}" id="port" name="port" style="width:450px;">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for=password" class="col-sm-2 control-label">Password:</label>
+
+                      <div class="col-sm-10">
+                        <input type="text" value="{{ result.db.password }}" id="password"  name="password" style="width:450px;">
+                      </div>
+                 </div>
+                <div class="form-group">
+                  <label id="database"  class="col-sm-2 control-label">Database:</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.db.database }}" for="database" name="database" style="width:450px;">
+                  </div>
+                </div>
+
+                 <hr>
+                <p><b>jenkins设置</b></p>
+                <div class="form-group">
+                  <label  id="jenkins_url" class="col-sm-2 control-label">url:</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.jenkins.url }}" for="jenkins_url" name="jenkins_url" style="width:450px;">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label id="jenkins_user" class="col-sm-2 control-label">user:</label>
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.jenkins.user }}" for="jenkins_user" name="jenkins_user" style="width:450px;">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="jenkins_password" class="col-sm-2 control-label">password:</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.jenkins.password }}" id="jenkins_password" name="jenkins_password" style="width:450px;">
+                  </div>
+                </div>
+
+                 <hr>
+                <p><b>redis设置</b></p>
+                <div class="form-group">
+                  <label for="redis_host" class="col-sm-2 control-label">Host:</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.redis.host }}" id="redis_host" name="redis_host" style="width:450px;">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="redis_port" class="col-sm-2 control-label">Port:</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.redis.port }}" id="redis_port" name="redis_port" style="width:450px;">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label  for="redis_user" class="col-sm-2 control-label">user:</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.redis.user }}" id="redis_user" name="redis_user" style="width:450px;">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="redis_password" class="col-sm-2 control-label">password:</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.redis.password }}" id="redis_password"  name="redis_password" style="width:450px;">
+                  </div>
+                </div>
+
+                 <hr>
+                <p><b>Mongodb设置</b></p>
+                <div class="form-group">
+                  <label for="mongodb_host" class="col-sm-2 control-label">Host:</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.mongodb.host }}" id="mongodb_host" name="mongodb_host" style="width:450px;">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="mongodb_port" class="col-sm-2 control-label">Port:</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.mongodb.port }}" id="mongodb_port" name="mongodb_port" style="width:450px;">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="mongodb_user" class="col-sm-2 control-label">user:</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.mongodb.user }}" id="mongodb_user" name="mongodb_user" style="width:450px;">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label  for="mongodb_user" class="col-sm-2 control-label">password:</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.mongodb.password }}"  id="mongodb_password" name="mongodb_password" style="width:450px;">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label  for="mongodb_collection" class="col-sm-2 control-label">collection:</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.mongodb.collection }}"  id="mongodb_collection" name="mongodb_collection" style="width:450px;">
+                  </div>
+                </div>
+
+
+
+             <hr>
+                <p><b>svn设置</b></p>
+                <div class="form-group">
+                  <label for="svn_user" class="col-sm-2 control-label">user:</label>
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.svn.user }}" id="svn_user" name="svn_user" style="width:450px;" placeholder="拉取svn代码用户名">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="svn_password" class="col-sm-2 control-label">password:</label>
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.svn.password }}" id="svn_password" name="svn_password" style="width:450px;">
+                  </div>
+                </div>
+
+
+            <hr>
+                <p><b>email设置</b></p>
+            <!--
+                <div class="form-group">
+                  <label for="tls" class="col-sm-2 control-label">tls:</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.email.tls }}" id="tls" name="tls" style="width:450px;">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="email_host" class="col-sm-2 control-label">smtp主机:</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.email.host }}" id="email_host" name="email_host" style="width:450px;">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="email_port" class="col-sm-2 control-label">Port:</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.email.port }}" id="email_port" name="email_port" style="width:450px;">
+                  </div>
+                </div>
+
+                   <div class="form-group">
+                  <label  for="from_email" class="col-sm-2 control-label">发件人显示名称:</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.email.from_email }}"  id="from_email" name="from_email" style="width:450px;">
+                  </div>
+                </div>
+
+                -->
+                <div class="form-group">
+                  <label for="email" class="col-sm-2 control-label">email:</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.email.email }}" id="email" name="email" style="width:450px;">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label  for="email_password" class="col-sm-2 control-label">password:</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.email.password }}"  id="email_password" name="email_password" style="width:450px;">
+                  </div>
+                </div>
+
+
+                 <hr>
+                    <p><b>ftp设置</b></p>
+                    <div class="form-group">
+                      <label for="ftp_host" class="col-sm-2 control-label">host:</label>
+                      <div class="col-sm-10">
+                        <input type="text" value="{{ result.ftp.host }}" id="ftp_host" name="ftp_host" style="width:450px;" placeholder="拉取svn代码用户名">
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="ftp_port" class="col-sm-2 control-label">port:</label>
+                      <div class="col-sm-10">
+                        <input type="text" value="{{ result.ftp.port }}" id="ftp_port" name="ftp_port" style="width:450px;">
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="ftp_user" class="col-sm-2 control-label">user:</label>
+                      <div class="col-sm-10">
+                        <input type="text" value="{{ result.ftp.user }}" id="ftp_user" name="ftp_user" style="width:450px;">
+                      </div>
+                    </div>
+
+                 <div class="form-group">
+                      <label for="ftp_password" class="col-sm-2 control-label">password:</label>
+                      <div class="col-sm-10">
+                        <input type="text" value="{{ result.ftp.password }}" id="ftp_password" name="ftp_password" style="width:450px;">
+                      </div>
+                    </div>
+
+                 <div class="form-group">
+                      <label for="ftppath" class="col-sm-2 control-label">路径:</label>
+                      <div class="col-sm-10">
+                        <input type="text" value="{{ result.ftp.ftppath }}" id="ftppath" name="ftppath" style="width:450px;">
+                      </div>
+                    </div>
+
+
+
+
+                <hr>
+                <p><b>webssh域名设置</b></p>
+                <div class="form-group">
+                  <label for="webssh_domain" class="col-sm-2 control-label">域名:</label>
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.webssh.webssh_domain }}" id="webssh_domain" name="webssh_domain" style="width:450px;" placeholder="webssh访问域名设置">
+                  </div>
+                </div>
+
+                 <div class="form-group">
+                  <label for="token" class="col-sm-2 control-label">Token:</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.webssh.token }}" id="token" name="token" style="width:450px;" readonly>
+                    <li class="btn btn-default" id="config" onclick="get_token();"><b>创建</b></li>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="ssh_password" class="col-sm-2 control-label">ssh password:</label>
+                  <div class="col-sm-10">
+                    <input type="text" value="{{ result.webssh.password }}" id="ssh_password" name="ssh_password" style="width:450px;">
+                  </div>
+                </div>
+
+              <!-- /.box-body -->
+              <div class="box-footer">
+                <button type="button"  id="save" class="btn btn-info pull-left" ><b>保存</b></button>
+              </div>
+              <!-- /.box-footer -->
+            </form>
+
+    </div>
+    </div>
+</section>
+</div>
+
+{% endblock %}
+
+{% block js_script %}
+
+<script type="text/javascript">
+    $("#save").click(function () {
+        if (confirm("确定修改？")){
+             $.ajax({
+                            url: "{% url  'config_save' %}",
+                            type: 'POST',
+                            data: $('#formdata').serialize(),
+                            dataType: 'JSON',
+                            traditional: true,
+                            success: function(data){
+                                if(data.status){
+                                    alert(data.data)
+                                    location.href="{% url  'config_save' %}";
+                                }else{
+                                    //$('#erro_msg').text(data.error);
+                                    alert(data.data)
+                                }
+                            }
+                        })
+        }
+    });
+
+</script>
+
+
+<script>
+function get_token() {
+    $.post('/config/token/',{csrfmiddlewaretoken: '{{ csrf_token }}'},function(data){
+        document.getElementById("token").value = data;
+    });
+}
+</script>
+{% endblock %}
