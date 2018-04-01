@@ -1,12 +1,12 @@
-{% extends 'base.html' %}
+{% extends 'accounts/base.html' %}
 {% load staticfiles %}
 
 
 {% block content %}
 
+
     <!-- Main content -->
-        <form action="" method="post" id="role_form">
-                {% csrf_token %}
+        <form action="" method="post" id="permission_form">
             <div class="box">
 
                 <!-- /.box-header -->
@@ -17,27 +17,31 @@
 
                             <th><input type="checkbox" id="choose_all"/></th>
                             <th>序号</th>
-                            <th>角色名称</th>
+                            <th>权限名称</th>
+                            <th>URL</th>
+                            <th>所属角色</th>
                         </tr>
                       </thead>
                             <tbody>
-                            {% for i in all_role %}
+                            {% for i in all_permission %}
                                 <tr>
 
                                     <td><input type="checkbox"  class="item1" value="{{ i.id }}" name="idc_check" /></td>
                                     <td>{{ forloop.counter }}</td>
-                                    <td ><a href="{% url 'role_edit' i.id %}">{{ i.name }}</a> </td>
+                                    <td><a href="{% url 'permission_edit' i.id %}"> {{ i.name }}</a> </td>
+                                    <td>{{ i.url }} </td>
+                                    <td>{{ i.role }} </td>
                                 </tr>
                             {% endfor %}
                             </tbody>
                   </table>
-                    <a href="{% url 'role_add' %}"  class="btn btn-success">添加</a>
-                    <button class="btn btn-danger" type="button" id="delete"> 删除</button>
-
+                        <a class="btn btn-success" href="{% url 'permission_add' %}">添加</a>
+                        <button class="btn btn-danger" type="button" id="delete"> 删除</button>
                 </div>
             </div>
         </form>
 
+        <!-- /.content -->
 
 {% endblock %}
 
@@ -52,21 +56,21 @@
         if(array.length>0) {
             if (confirm("确定是否删除?")) {
                 $.ajax({
-                    url: '{% url "role_del" %}',
+                    url: '{% url "permission_del" %}',
                     data: {id: JSON.stringify(array)},
                     type: 'POST',
                     dataType: 'JSON',
                     traditional: true,
                     success: function (data) {
                         if (data.status) {
-                            location.href = "{% url 'role_list' %}";
+                            location.href = "{% url 'permission_list' %}";
                         } else {
                             alert(data.error);
                         }
                     },
                     error: function () {
                         //location.href = "/noperm"
-                        alert(confirm("权限拒绝，请联系管理员"))
+                        alert(confirm("没有权限，请联系管理员"))
                     }
                 });
             }
